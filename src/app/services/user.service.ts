@@ -6,12 +6,12 @@ import { User } from '@/app/models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private apiUrl = `${environment.apiUrl}/users`;
-
+  private apiUrl = `${environment.apiUrl}/user`;
+  private allUserUrl = `${environment.apiUrl}/users`;
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<User[]>(this.allUserUrl);
   }
 
   getUser(userId: number): Observable<User> {

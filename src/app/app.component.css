@@ -1,0 +1,5 @@
+/* Tailwind handles most styling — just font family override here */
+:host {
+  display: block;
+  font-family: 'Raleway', sans-serif;
+}
