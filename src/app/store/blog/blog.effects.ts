@@ -68,4 +68,16 @@ export class BlogEffects {
       )
     )
   );
+
+  loadLatestBlogs$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(BlogActions.loadLatestBlogs),
+      mergeMap(() =>
+        this.blogService.getLatestBlogs().pipe(
+          map((blogs) => BlogActions.loadLatestBlogsSuccess({ blogs })),
+          catchError((error) => of(BlogActions.loadLatestBlogsFailure({ error: error.message })))
+        )
+      )
+    )
+  );
 }

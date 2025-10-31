@@ -7,9 +7,14 @@ export const routes: Routes = [
       import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
-    path: 'blog',
+    path: 'blogs',
     loadComponent: () =>
-      import('./pages/blog/blog.component').then((m) => m.BlogComponent),
+      import('./pages/blog/blog.component').then((m) => m.BlogsComponent),
+  },
+  {
+    path: 'blog/:id',
+    loadComponent: () =>
+      import('./pages/blog-detail/blog-detail.component').then((m) => m.BlogDetailComponent),
   },
   {
     path: 'login',

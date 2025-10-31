@@ -8,16 +8,16 @@
     <p>Loading posts...</p>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
-    <article *ngFor="let blog of blogs$ | async" class="bg-white rounded-lg shadow-md hover:-translate-y-1 hover:shadow-xl transition-all overflow-hidden">
+  <div class="space-y-8 mb-10">
+    <article *ngFor="let blog of blogs$ | async" class="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden">
       <div class="p-6">
-        <h2 class="text-xl text-gray-800 mb-4 leading-tight">{{ blog.title }}</h2>
+        <h2 class="text-2xl text-gray-800 mb-4 leading-tight">{{ blog.title }}</h2>
         <div class="flex justify-between mb-4 text-sm text-gray-500">
           <span class="font-medium">By {{ getUserName(blog.authorId) }}</span>
           <span>{{ blog.createdAt | date }}</span>
         </div>
-        <p class="text-gray-600 leading-relaxed mb-5 line-clamp-3">{{ blog.content }}</p>
-        <button class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm transition-colors">Read More</button>
+        <div class="text-gray-600 leading-relaxed mb-5" [innerHTML]="getSafeHtml(blog.content)"></div>
+        <a [routerLink]="['/blog', blog.id]" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm transition-colors inline-block">Read More</a>
       </div>
     </article>
   </div>

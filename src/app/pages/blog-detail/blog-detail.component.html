@@ -1,0 +1,43 @@
+<div class="max-w-4xl mx-auto p-5" *ngIf="blog$ | async as blog">
+  <article class="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div class="p-8">
+      <h1 class="text-4xl font-bold text-gray-900 mb-6">{{ blog.title }}</h1>
+      
+      <div class="flex items-center text-gray-600 mb-8">
+        <span class="font-medium">By {{ getUserName(blog.authorId) }}</span>
+        <span class="mx-3">•</span>
+        <span>{{ blog.createdAt | date:'fullDate' }}</span>
+      </div>
+      
+      <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed" [innerHTML]="getSafeHtml(blog.content)"></div>
+    </div>
+  </article>
+
+  <div class="flex justify-between items-center mt-8">
+    <a *ngIf="getPreviousBlog() as prevId; else prevDisabled" 
+       [routerLink]="['/blog', prevId]" 
+       class="flex items-center text-blue-600 hover:text-blue-800 font-medium">
+      <span class="mr-2">←</span> Previous Post
+    </a>
+    <ng-template #prevDisabled>
+      <span class="text-gray-400 font-medium">
+        <span class="mr-2">←</span> Previous Post
+      </span>
+    </ng-template>
+
+    <a routerLink="/blogs" class="text-gray-600 hover:text-gray-800 font-medium">
+      All Posts
+    </a>
+
+    <a *ngIf="getNextBlog() as nextId; else nextDisabled" 
+       [routerLink]="['/blog', nextId]" 
+       class="flex items-center text-blue-600 hover:text-blue-800 font-medium">
+      Next Post <span class="ml-2">→</span>
+    </a>
+    <ng-template #nextDisabled>
+      <span class="text-gray-400 font-medium">
+        Next Post <span class="ml-2">→</span>
+      </span>
+    </ng-template>
+  </div>
+</div>

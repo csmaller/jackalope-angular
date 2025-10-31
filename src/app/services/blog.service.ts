@@ -31,4 +31,8 @@ export class BlogService {
   deleteBlog(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getLatestBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(`${this.apiUrl}/latest`);
+  }
 }

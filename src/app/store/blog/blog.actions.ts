@@ -20,3 +20,7 @@ export const updateBlogFailure = createAction('[Blog] Update Blog Failure', prop
 export const deleteBlog = createAction('[Blog] Delete Blog', props<{ id: number }>());
 export const deleteBlogSuccess = createAction('[Blog] Delete Blog Success', props<{ id: number }>());
 export const deleteBlogFailure = createAction('[Blog] Delete Blog Failure', props<{ error: string }>());
+
+export const loadLatestBlogs = createAction('[Blog] Load Latest Blogs');
+export const loadLatestBlogsSuccess = createAction('[Blog] Load Latest Blogs Success', props<{ blogs: Blog[] }>());
+export const loadLatestBlogsFailure = createAction('[Blog] Load Latest Blogs Failure', props<{ error: string }>());

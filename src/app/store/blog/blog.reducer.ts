@@ -4,6 +4,7 @@ import * as BlogActions from './blog.actions';
 
 export interface BlogState {
   blogs: Blog[];
+  latestBlogs: Blog[];
   selectedBlog: Blog | null;
   loading: boolean;
   error: string | null;
@@ -11,6 +12,7 @@ export interface BlogState {
 
 export const initialState: BlogState = {
   blogs: [],
+  latestBlogs: [],
   selectedBlog: null,
   loading: false,
   error: null,
@@ -36,5 +38,9 @@ export const blogReducer = createReducer(
   
   on(BlogActions.deleteBlog, (state) => ({ ...state, loading: true })),
   on(BlogActions.deleteBlogSuccess, (state, { id }) => ({ ...state, loading: false, blogs: state.blogs.filter(b => b.id !== id) })),
-  on(BlogActions.deleteBlogFailure, (state, { error }) => ({ ...state, loading: false, error }))
+  on(BlogActions.deleteBlogFailure, (state, { error }) => ({ ...state, loading: false, error })),
+  
+  on(BlogActions.loadLatestBlogs, (state) => ({ ...state, loading: true })),
+  on(BlogActions.loadLatestBlogsSuccess, (state, { blogs }) => ({ ...state, loading: false, latestBlogs: blogs })),
+  on(BlogActions.loadLatestBlogsFailure, (state, { error }) => ({ ...state, loading: false, error }))
 );
