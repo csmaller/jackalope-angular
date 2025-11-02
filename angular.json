@@ -31,6 +31,12 @@
               },
               {
                 "glob": "**/*",
+                "input": "node_modules/tinymce",
+                "output": "/tinymce/"
+              },
+
+              {
+                "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
               }

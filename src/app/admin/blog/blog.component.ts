@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -20,6 +20,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 
+import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+
 @Component({
   selector: 'app-blog',
   standalone: true,
@@ -33,7 +35,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    EditorComponent,
   ],
+  providers: [
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'https://cdn.tiny.cloud/1/mfb12b4l7xj8qibkn5kb72tiwhij4pz23zm9p49lltgubefm/tinymce/6/tinymce.min.js' },
+  ],
+
   template: `
     <mat-card class="create-card">
       <mat-card-header>
@@ -54,10 +61,10 @@ import { MatIconModule } from '@angular/material/icon';
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Content</mat-label>
-          <textarea matInput rows="4" [(ngModel)]="newBlog.content"></textarea>
-        </mat-form-field>
+        <div class="full-width">
+          <label class="content-label">Content</label>
+          <editor [(ngModel)]="newBlog.content" [init]="editorConfig"></editor>
+        </div>
       </mat-card-content>
       <mat-card-actions>
         <button matRaisedButton color="primary" (click)="createBlog()">
@@ -116,14 +123,13 @@ import { MatIconModule } from '@angular/material/icon';
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Content</mat-label>
-                <textarea
-                  matInput
-                  rows="4"
+              <div class="full-width">
+                <label class="content-label">Content</label>
+                <editor
                   [(ngModel)]="editForm.content"
-                ></textarea>
-              </mat-form-field>
+                  [init]="editorConfig"
+                ></editor>
+              </div>
             </mat-card-content>
             <mat-card-actions>
               <button matRaisedButton color="primary" (click)="updateBlog()">
@@ -153,6 +159,12 @@ import { MatIconModule } from '@angular/material/icon';
       mat-progress-spinner {
         margin: 20px auto;
       }
+      .content-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.6);
+      }
     `,
   ],
 })
@@ -161,6 +173,16 @@ export class BlogComponent implements OnInit {
   users$!: Observable<User[]>;
   loading$!: Observable<boolean>;
 
+  editorConfig = {
+    apiKey: 'mfb12b4l7xj8qibkn5kb72tiwhij4pz23zm9p49lltgubefm',
+    height: 300,
+    menubar: false,
+    plugins: 'lists link image code',
+    toolbar:
+      'undo redo | formatselect fontsize | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
+    block_formats: 'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6',
+    fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
+  };
   newBlog = { title: '', content: '', authorId: 0 };
   editForm = {
     id: 0,
