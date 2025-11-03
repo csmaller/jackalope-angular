@@ -7,7 +7,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
 
-   
+   .blog-image{
+    max-width:400px;
+    float:left;
+    margin-right:16px;
+   }
 }
 
  *, :before, :after{

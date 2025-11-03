@@ -19,9 +19,12 @@
         <h2 class="text-2xl text-gray-800 mb-4 leading-tight">
           {{ blog.title }}
         </h2>
-        <div class="flex justify-between mb-4 text-sm text-gray-500">
-          <span class="font-medium">By {{ blog.author.firstName + ' ' + blog.author.lastName }}</span>
-          <span>{{ blog.createdAt | date }}</span>
+        <div class="mb-4 text-sm text-gray-500">
+          <div class="flex justify-between">
+            <span class="font-medium">By {{ blog.author.firstName + ' ' + blog.author.lastName }}</span>
+            <span>{{ blog.createdAt | date }}</span>
+          </div>
+          <div class="text-xs italic text-gray-400 mt-1">Updated {{ blog.updatedAt | date:'mediumDate' }}</div>
         </div>
         <div
           class="text-gray-600 leading-relaxed mb-5"

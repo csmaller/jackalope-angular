@@ -1,34 +1,33 @@
-<div class="max-w-100vw w-100vw mx-auto py-5 hero-home">
-  <div class="text-center py-15 text-white rounded-lg">
-    <h2 class="mb-5">{{ title }}</h2>
+<div class="max-w-100vw w-100vw mx-auto py-3 sm:py-5 hero-home">
+  <div class="text-center py-8 sm:py-15 text-white rounded-lg px-4">
+    <h2 class="mb-3 sm:mb-5 text-2xl sm:text-4xl lg:text-5xl">{{ title }}</h2>
   </div>
 </div>
 
-<div class="max-w-6xl mx-auto px-5 py-12">
-  <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">
+<div class="max-w-6xl mx-auto px-4 sm:px-5 py-8 sm:py-12">
+  <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-gray-800">
     Latest Blog Posts
   </h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
     <article
       *ngFor="let blog of latestBlogs$ | async"
       class="bg-white rounded-lg shadow-md hover:-translate-y-1 hover:shadow-xl transition-all overflow-hidden"
     >
-      <div class="p-6">
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">
+      <div class="p-4 sm:p-6">
+        <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2 sm:mb-3 leading-tight">
           {{ blog.title }}
         </h3>
-        <div class="text-sm text-gray-500 mb-4">
-          <span>By {{ blog.author.firstName + ' ' + blog.author.lastName }}</span>
-          <span class="mx-2">•</span>
-          <span>{{ blog.createdAt | date }}</span>
+        <div class="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
+          <div>By {{ blog.author.firstName + ' ' + blog.author.lastName }}</div>
+          <div class="text-xs italic text-gray-400 mt-1">Updated {{ blog.updatedAt | date:'mediumDate' }}</div>
         </div>
         <div
-          class="text-gray-600 leading-relaxed mb-4 line-clamp-3"
+          class="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4 line-clamp-3"
           [innerHTML]="getSafeHtml(blog.content)"
         ></div>
         <a
           [routerLink]="['/blog', blog.id]"
-          class="text-blue-500 hover:text-blue-600 font-medium"
+          class="text-blue-500 hover:text-blue-600 font-medium text-sm sm:text-base"
           >Read More →</a
         >
       </div>

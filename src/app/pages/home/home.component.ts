@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BlogWithAuthor } from '@/app/models/blog.model';
 import * as BlogActions from '@/app/store/blog/blog.actions';
 import { selectLatestBlogs } from '@/app/store/blog/blog.selectors';
+import { getSafeHtml } from '@/app/utils/html.utils';
 
 @Component({
   selector: 'app-home',
@@ -19,10 +20,11 @@ export class HomeComponent implements OnInit {
   title = 'Welcome to Jackalope';
   latestBlogs$!: Observable<BlogWithAuthor[]>;
 
-  constructor(
-    private store: Store,
-    private sanitizer: DomSanitizer
-  ) {}
+  constructor(private store: Store, private sanitizer: DomSanitizer) {}
+
+  getSafeHtml(content: string): SafeHtml {
+    return getSafeHtml(this.sanitizer, content);
+  }
 
   ngOnInit() {
     this.store.dispatch(BlogActions.loadLatestBlogs());
@@ -31,7 +33,5 @@ export class HomeComponent implements OnInit {
 
 
 
-  getSafeHtml(content: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(content);
-  }
+
 }

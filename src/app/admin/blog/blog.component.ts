@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { BlogWithAuthor, Blog } from '@/app/models/blog.model';
@@ -19,6 +20,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { getSafeHtml } from '@/app/utils/html.utils';
 
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 
@@ -38,7 +40,11 @@ import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
     EditorComponent,
   ],
   providers: [
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'https://cdn.tiny.cloud/1/mfb12b4l7xj8qibkn5kb72tiwhij4pz23zm9p49lltgubefm/tinymce/6/tinymce.min.js' },
+    {
+      provide: TINYMCE_SCRIPT_SRC,
+      useValue:
+        'https://cdn.tiny.cloud/1/mfb12b4l7xj8qibkn5kb72tiwhij4pz23zm9p49lltgubefm/tinymce/6/tinymce.min.js',
+    },
   ],
 
   template: `
@@ -87,12 +93,13 @@ import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
           <div *ngIf="editingId !== blog.id">
             <mat-card-header>
               <mat-card-title>{{ blog.title }}</mat-card-title>
-              <mat-card-subtitle
-                >By: {{ blog.author.firstName + ' ' + blog.author.lastName }}</mat-card-subtitle
-              >
+              <mat-card-subtitle>
+                <div>By: {{ blog.author.firstName + ' ' + blog.author.lastName }}</div>
+                <div class="text-xs italic text-gray-400 mt-1">Updated {{ blog.updatedAt | date:'mediumDate' }}</div>
+              </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              <p>{{ blog.content }}</p>
+              <div [innerHTML]="getSafeHtml(blog.content)"></div>
             </mat-card-content>
             <mat-card-actions>
               <button matButton color="primary" (click)="editBlog(blog)">
@@ -180,7 +187,8 @@ export class BlogComponent implements OnInit {
     plugins: 'lists link image code',
     toolbar:
       'undo redo | formatselect fontsize | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image | code',
-    block_formats: 'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6',
+    block_formats:
+      'Paragraph=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6',
     fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt 48pt',
   };
   newBlog = { title: '', content: '', authorId: 0 };
@@ -195,7 +203,11 @@ export class BlogComponent implements OnInit {
   editingId: number | null = null;
   userList: User[] = [];
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private sanitizer: DomSanitizer) {}
+
+  getSafeHtml(content: string): SafeHtml {
+    return getSafeHtml(this.sanitizer, content);
+  }
 
   ngOnInit() {
     this.blogs$ = this.store.select(selectAllBlogs);
@@ -238,6 +250,4 @@ export class BlogComponent implements OnInit {
       updatedAt: '',
     };
   }
-
-
 }
