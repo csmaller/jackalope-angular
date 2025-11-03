@@ -37,7 +37,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./admin/blog/blog.component').then((m) => m.BlogComponent),
       },
-      { path: '', redirectTo: 'users', pathMatch: 'full' },
+      { path: '', redirectTo: 'blog', pathMatch: 'full' },
     ],
   },
 ];

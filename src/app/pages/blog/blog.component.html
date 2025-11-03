@@ -1,7 +1,9 @@
 <div class="max-w-6xl mx-auto p-5">
   <div class="text-center mb-10">
     <h1 class="text-4xl text-gray-800 mb-3">Blog Posts</h1>
-    <p class="text-lg text-gray-600">Discover our latest articles and insights</p>
+    <p class="text-lg text-gray-600">
+      Discover our latest articles and insights
+    </p>
   </div>
 
   <div *ngIf="loading$ | async" class="text-center py-10 text-lg text-gray-600">
@@ -9,20 +11,35 @@
   </div>
 
   <div class="space-y-8 mb-10">
-    <article *ngFor="let blog of blogs$ | async" class="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden">
+    <article
+      *ngFor="let blog of blogs$ | async"
+      class="w-full bg-white rounded-lg shadow-md hover:shadow-xl transition-all overflow-hidden"
+    >
       <div class="p-6">
-        <h2 class="text-2xl text-gray-800 mb-4 leading-tight">{{ blog.title }}</h2>
+        <h2 class="text-2xl text-gray-800 mb-4 leading-tight">
+          {{ blog.title }}
+        </h2>
         <div class="flex justify-between mb-4 text-sm text-gray-500">
-          <span class="font-medium">By {{ getUserName(blog.authorId) }}</span>
+          <span class="font-medium">By {{ blog.author.firstName + ' ' + blog.author.lastName }}</span>
           <span>{{ blog.createdAt | date }}</span>
         </div>
-        <div class="text-gray-600 leading-relaxed mb-5" [innerHTML]="getSafeHtml(blog.content)"></div>
-        <a [routerLink]="['/blog', blog.id]" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm transition-colors inline-block">Read More</a>
+        <div
+          class="text-gray-600 leading-relaxed mb-5"
+          [innerHTML]="getSafeHtml(blog.content)"
+        ></div>
+        <a
+          [routerLink]="['/blog', blog.id]"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm transition-colors inline-block"
+          >Read More</a
+        >
       </div>
     </article>
   </div>
 
-  <div *ngIf="(blogs$ | async)?.length === 0 && !(loading$ | async)" class="text-center py-15 text-gray-600 text-lg">
+  <div
+    *ngIf="(blogs$ | async)?.length === 0 && !(loading$ | async)"
+    class="text-center py-15 text-gray-600 text-lg"
+  >
     <p>No blog posts available at the moment.</p>
   </div>
 </div>

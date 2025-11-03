@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Blog } from '@/app/models/blog.model';
+import { BlogWithAuthor, Blog } from '@/app/models/blog.model';
 import { User } from '@/app/models/user.model';
 import * as BlogActions from '@/app/store/blog/blog.actions';
 import * as UserActions from '@/app/store/user/user.actions';
@@ -88,7 +88,7 @@ import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
             <mat-card-header>
               <mat-card-title>{{ blog.title }}</mat-card-title>
               <mat-card-subtitle
-                >By: {{ getUserName(blog.authorId) }}</mat-card-subtitle
+                >By: {{ blog.author.firstName + ' ' + blog.author.lastName }}</mat-card-subtitle
               >
             </mat-card-header>
             <mat-card-content>
@@ -169,7 +169,7 @@ import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
   ],
 })
 export class BlogComponent implements OnInit {
-  blogs$!: Observable<Blog[]>;
+  blogs$!: Observable<BlogWithAuthor[]>;
   users$!: Observable<User[]>;
   loading$!: Observable<boolean>;
 
@@ -213,7 +213,7 @@ export class BlogComponent implements OnInit {
     }
   }
 
-  editBlog(blog: Blog) {
+  editBlog(blog: BlogWithAuthor) {
     this.editingId = blog.id;
     this.editForm = { ...blog };
   }
@@ -239,8 +239,5 @@ export class BlogComponent implements OnInit {
     };
   }
 
-  getUserName(userId: number): string {
-    const user = this.userList.find((u) => u.id === userId);
-    return user ? `${user.firstName} ${user.lastName}` : 'Unknown';
-  }
+
 }

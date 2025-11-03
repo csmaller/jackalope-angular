@@ -18,7 +18,7 @@
           {{ blog.title }}
         </h3>
         <div class="text-sm text-gray-500 mb-4">
-          <span>By {{ getUserName(blog.authorId) }}</span>
+          <span>By {{ blog.author.firstName + ' ' + blog.author.lastName }}</span>
           <span class="mx-2">•</span>
           <span>{{ blog.createdAt | date }}</span>
         </div>
