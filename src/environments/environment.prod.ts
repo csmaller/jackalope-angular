@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.jackalope.com',
+  apiUrl: 'https://api.jackalopeadventures-backend.com',
 };
